@@ -18,52 +18,61 @@ const slides = [
 ]
 
 
-let slideindex = 0;
 
-// Savoit combien il y a délement dans mon tableau slides (Max slides)
+ 
 
-console.log(slides)
-console.log(slides[slideindex])
+let slideIndex = 0;
 
-
-
-//fleche du carrousel//
-const arrowPrev = document.querySelector(".arrow_left");
-console.log(arrowPrev)
-arrowPrev.addEventListener('click', () =>{
-    console.log("Click sur left")
-    if(slideindex==0){
-        slideindex = 3
-    }
-    else{
-        slideindex=slideindex-1
-    }
-    showSlides (slideindex);
-})
-
-
-const arrowNext = document.querySelector(".arrow_right")
-console.log(arrowNext)
-arrowNext.addEventListener('click', () =>{
-    console.log("Click sur right")
-    if(slideindex==3){
-        slideindex = 0
-    }
-    else{
-        slideindex=slideindex+1
-    }
-    showSlides (slideindex);
-})
-
-showSlide (slideindex);
-
-
-
+// Afficher les diapositives et les dots
 function showSlides(index) {
     const bannerImg = document.querySelector(".banner-img");
     const tagline = document.querySelector("#banner p");
-    
+    const dots = document.querySelectorAll(".dot");
+
+    // Mettre à jour la source de l'image et le tagline
     bannerImg.src = slides[index].image;
     tagline.innerHTML = slides[index].tagLine;
+
+    // Mettre à jour la classe pour les dots
+    dots.forEach((dot, dotIndex) => {
+        if (dotIndex === index) {
+            dot.classList.add("dot_selected");
+        } else {
+            dot.classList.remove("dot_selected");
+        }
+    });
 }
- 
+
+// Flèche gauche du carrousel
+const arrowPrev = document.querySelector(".arrow_left");
+arrowPrev.addEventListener('click', () => {
+    if (slideIndex === 0) {
+        slideIndex = slides.length - 1;
+    } else {
+        slideIndex = slideIndex - 1;
+    }
+    showSlides(slideIndex);
+});
+
+// Flèche droite du carrousel
+const arrowNext = document.querySelector(".arrow_right");
+arrowNext.addEventListener('click', () => {
+    if (slideIndex === slides.length - 1) {
+        slideIndex = 0;
+    } else {
+        slideIndex = slideIndex + 1;
+    }
+    showSlides(slideIndex);
+});
+
+// Écouter les clics sur les dots
+const dots = document.querySelectorAll(".dot");
+dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+        slideIndex = index;
+        showSlides(slideIndex);
+    });
+});
+
+// Afficher la diapositive initiale
+showSlides(slideIndex);
